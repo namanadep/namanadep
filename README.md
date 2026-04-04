@@ -86,7 +86,7 @@ Topics: *CUDA kernel fusion 7.94×* · *MI300X vs H200 actual numbers* · *RoCE 
 
 ### Contact
 
-LinkedIn: [namanadep](https://www.linkedin.com/in/namanadep/) · Mentoring: [topmate.io/namanadep](https://topmate.io/namanadep)
+LinkedIn: [naman-adep](https://www.linkedin.com/in/naman-adep/) · Mentoring: [topmate.io/namanadep](https://topmate.io/namanadep)
 
 ---
 
