@@ -74,6 +74,8 @@ I commission, validate, and operate GPU clusters for AI workloads. I have run ex
 | [**slurm-job-analyzer**](https://github.com/namanadep/slurm-job-analyzer) | SLURM 2-node 16-GPU cluster: Job 31 — all 16 H200s at 100% util for 3 min, GPU waste report, queue-wait analysis |
 | [**mig-performance-lab**](https://github.com/namanadep/mig-performance-lab) | MIG profile tradeoffs: isolation vs throughput on A100/H100-class GPUs |
 
+---
+
 ### Writing
 
 Medium: [@adepnaman](https://medium.com/@adepnaman) — benchmarks on H200 and MI300X, NCCL, mixed precision, kernel fusion, GPU memory, VAST vs NetApp storage, India AI infrastructure.
