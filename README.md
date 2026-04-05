@@ -1,107 +1,60 @@
-<!-- Profile repo: github.com/namanadep/namanadep -->
+<!-- github.com/namanadep/namanadep — profile README -->
 
-### GitHub pins (do this in the UI — API cannot set pins)
+## Hi, I'm Naman — GPU infrastructure & performance engineering
 
-GitHub does not allow setting profile pins via `gh` or the public API. While logged in as **namanadep**:
-
-1. Open [github.com/namanadep](https://github.com/namanadep).
-2. Click **Customize your pins** (or **Edit profile** → pinned repositories).
-3. **Unpin** anything that is not in the list below (e.g. old AI/ESG/security demos).
-4. **Pin exactly these six** (order is up to you):
-
-| Pin | Repository | Why |
-|-----|------------|-----|
-| 1 | [mi300x-amd-rocm-validation](https://github.com/namanadep/mi300x-amd-rocm-validation) | AMD hardware depth — dual-vendor signal |
-| 2 | [amd-enterprise-ai-platform](https://github.com/namanadep/amd-enterprise-ai-platform) | Full AMD Enterprise AI Suite deployment (Kubernetes) |
-| 3 | [multi-node-nccl-p2p-benchmarks](https://github.com/namanadep/multi-node-nccl-p2p-benchmarks) | NCCL + RoCE v2 failure investigation |
-| 4 | [cuda-pytorch-optimization-benchmarks](https://github.com/namanadep/cuda-pytorch-optimization-benchmarks) | CUDA performance engineering depth |
-| 5 | [hpc-gpu-observability-lab](https://github.com/namanadep/hpc-gpu-observability-lab) | Dual-vendor observability |
-| 6 | [slurm-job-analyzer](https://github.com/namanadep/slurm-job-analyzer) | Cluster ops / scheduler analysis |
+I commission, validate, and operate GPU clusters for AI workloads — AMD Instinct and NVIDIA.
+Everything below was measured on real hardware.
 
 ---
 
-### Hi, I'm Naman — GPU infrastructure & HPC performance engineering
+### AMD Instinct / ROCm work
 
-I commission, validate, and operate GPU clusters for AI workloads. I have run experiments on real hardware — not simulators, not vendor-provided benchmarks — and written down what I measured.
+| System | Specs | What I measured |
+|--------|-------|-----------------|
+| **AMD Instinct MI300X VF** | 191.69 GiB HBM3, gfx942 / CDNA3, ROCm 6.4.1 | FP32 90.56 TFLOPS · FP16 4.20× speedup · Qwen3-32B 296 tok/s @ conc=8 |
+| **AMD MI300X (8-GPU node)** | 8× 192 GiB HBM3, XGMI, RCCL 2.22.3 | RCCL all-reduce bandwidth · 1.29 TB memory stress · thermal at 750 W/GPU |
 
----
-
-### Hardware I have worked on directly
-
-| System | Key specs | What I measured |
-|--------|-----------|-----------------|
-| **NVIDIA H200 NVL** (8-GPU node) | 141 GB HBM3e, NVLink 4.0 (NV18) | 46.5 TFLOPS FP32, 548 W peak, 100% util · Ollama 704 tokens/s |
-| **NVIDIA H200 SXM** (training cluster) | 2,725 GB/s HBM bandwidth, CUDA 12.8 | Kernel fusion 7.94×, Tensor Core 14.38×, training loop 7.34× |
-| **2-node 16-GPU H200 NVL cluster** | NVLink intra-node, RoCE v2 cross-node | NCCL AllReduce ~781 GB/s intra-node · TCP fallback 2.28 GB/s · Full RoCE v2 failure investigation |
-| **AMD Instinct MI300X VF** (8-GPU node) | 192 GB HBM3/GPU · 1.54 TB total · XGMI full-mesh | 94.5 TFLOPS FP32 · RCCL AllReduce 433 GB/s · 1.29 TB stressed · ROCm 6.4.1 |
+**Stack:** ROCm 6.4.1 · PyTorch 2.4.1+rocm6.0 · RKE2 v1.34.1 · AMD GPU Operator v1.4.1 · AIRM / vLLM
 
 ---
 
-### Problems I solve
+### NVIDIA work (breadth)
 
-**Cluster commissioning** — driver/NCCL/ROCm stack validation, GRES GPU config, munge auth, SLURM scheduler bring-up, acceptance testing before handing a cluster to users.
-
-**Performance measurement** — FLOPS-vs-theoretical gap analysis, collective bandwidth sweeps (NCCL/RCCL), kernel fusion and mixed precision profiling, memory allocator behavior under fragmentation.
-
-**Failure investigation** — RoCE v2 IBV_WC_RETRY_EXC_ERR root cause (PFC/ECN fabric misconfiguration), SLURM GPU GRES mismatches causing silent queue stalls, GPU thermal throttle identification.
-
-**Observability** — DCGM exporter + AMD amd-metrics-exporter unified on port 9400, Prometheus scrape configs, XID error alerting, sacct-based GPU waste reports.
-
-**Storage for AI** — fio benchmarks with O_DIRECT (144 tests), data loading vs checkpointing IOPS decomposition, VAST vs NetApp real-cluster comparison.
-
-**AMD Enterprise AI Suite (Kubernetes)** — Bloom CLI cluster installer, RKE2, ClusterForge (Argo CD + Gitea), AIRM (AI Resource Manager / Workbench), AMD GPU Operator — deployed on real hardware, documented with every fix that vendor docs don't cover.
+| System | Key specs |
+|--------|-----------|
+| NVIDIA H200 NVL (single node) | 143 GiB HBM3e, NVLink 4.0 · 46.5 TFLOPS FP32 |
+| NVIDIA H200 (2-node cluster) | NVLink intra-node ~781 GB/s · RoCE v2 failure investigation |
 
 ---
 
-### Selected work (flagship repos — start here)
+### Pinned repositories
 
-| Repo | Key result | What it shows |
-|------|-----------|---------------|
-| [**amd-enterprise-ai-platform**](https://github.com/namanadep/amd-enterprise-ai-platform) | Bloom → RKE2 → ClusterForge → AIRM deployed March 2026 · 7 real issues documented | Full AMD Enterprise AI Suite deployment on Kubernetes — Bloom CLI, RKE2, Canal CNI, AMD GPU Operator, AIRM platform |
-| [**mi300x-amd-rocm-validation**](https://github.com/namanadep/mi300x-amd-rocm-validation) | 94.5 TFLOPS · 433 GB/s RCCL · 1.29 TB stress · 0 throttle events | Complete AMD MI300X bare-metal commissioning — 9 production-readiness reports, ROCm bring-up, XGMI topology |
-| [**multi-node-nccl-p2p-benchmarks**](https://github.com/namanadep/multi-node-nccl-p2p-benchmarks) | NVLink ~781 GB/s · TCP ~2.28 GB/s · RoCE v2 IBV_WC_RETRY_EXC_ERR diagnosed | 16-GPU H200 NCCL commissioning — full P2P matrix, cross-node AllReduce sweep, RoCE v2 PFC/ECN failure investigation |
-| [**cuda-pytorch-optimization-benchmarks**](https://github.com/namanadep/cuda-pytorch-optimization-benchmarks) | Kernel fusion 7.94× · Tensor Core 14.38× · training loop 7.34× · 95.24% fragmentation | 4 measured experiments on H200SXM — why each optimization works, not just that it works |
-| [**hpc-gpu-observability-lab**](https://github.com/namanadep/hpc-gpu-observability-lab) | NVIDIA DCGM + AMD amd-metrics-exporter, both port 9400 | Dual-vendor telemetry — unified Prometheus stack, real GPU power/temp CSV, XID error alerting |
+| # | Repo | Signal |
+|---|------|--------|
+| 1 | [mi300x-amd-rocm-validation](https://github.com/namanadep/mi300x-amd-rocm-validation) | ROCm perf · RCCL · HBM stress · thermal — 8-GPU node + single-VF rocprof |
+| 2 | [amd-enterprise-ai-platform](https://github.com/namanadep/amd-enterprise-ai-platform) | Bloom → RKE2 → ClusterForge → AIRM — every failure documented |
+| 3 | [llm-inference-observability](https://github.com/namanadep/llm-inference-observability) | Qwen3-32B on MI300X VF: 296 tok/s, TTFT p50 62 ms, zero OOM |
+| 4 | [amd-rocm-gpu-ops](https://github.com/namanadep/amd-rocm-gpu-ops) | Operational health checks + K8s GPU Operator runbook |
+| 5 | [multi-node-nccl-p2p-benchmarks](https://github.com/namanadep/multi-node-nccl-p2p-benchmarks) | H200 NCCL P2P · RoCE investigation · RCCL-on-Instinct companion |
+| 6 | [amd-ai-workbench-ops](https://github.com/namanadep/amd-ai-workbench-ops) | AI Workbench operations — install, user guide, model deploy |
 
 ---
 
-### All repos
+### Skills
 
-| Repo | What it demonstrates |
-|------|----------------------|
-| [**mi300x-amd-rocm-validation**](https://github.com/namanadep/mi300x-amd-rocm-validation) | Full AMD MI300X validation: 94.5 TFLOPS FP32, 433 GB/s RCCL AllReduce, 1.29 TB stress — real scripts and 9 production-readiness reports |
-| [**multi-node-nccl-p2p-benchmarks**](https://github.com/namanadep/multi-node-nccl-p2p-benchmarks) | 16-GPU H200 NCCL commissioning: NVLink ~781 GB/s intra-node, TCP ~2.28 GB/s cross-node, full RoCE v2 failure investigation (IBV_WC_RETRY_EXC_ERR, PFC/ECN root cause) |
-| [**cuda-pytorch-optimization-benchmarks**](https://github.com/namanadep/cuda-pytorch-optimization-benchmarks) | 4 measured experiments on H200SXM: kernel fusion 7.94×, Tensor Core 14.38×, training loop 7.34×, 95.24% memory fragmentation |
-| [**hpc-gpu-observability-lab**](https://github.com/namanadep/hpc-gpu-observability-lab) | Dual-vendor telemetry: NVIDIA DCGM + AMD amd-metrics-exporter, both port 9400, same Prometheus stack — real GPU power/temp CSV included |
-| [**h200-gpu-benchmark-suite**](https://github.com/namanadep/h200-gpu-benchmark-suite) | H200 NVL: 46.5 TFLOPS FP32, 548W peak, 100% utilization — reproducible CLI + real monitoring CSV |
-| [**storage-ai-fio-benchmarks**](https://github.com/namanadep/storage-ai-fio-benchmarks) | 144 fio benchmarks on H200 cluster: VAST vs NetApp — 10.9× mixed IOPS gap (207K vs 19K) |
-| [**llm-inference-observability**](https://github.com/namanadep/llm-inference-observability) | Inference harness: Ollama on H200 NVL — 704 tokens/s, 12-request latency table, correlated GPU telemetry |
-| [**slurm-job-analyzer**](https://github.com/namanadep/slurm-job-analyzer) | SLURM 2-node 16-GPU cluster: Job 31 — all 16 H200s at 100% util for 3 min, GPU waste report, queue-wait analysis |
-| [**amd-enterprise-ai-platform**](https://github.com/namanadep/amd-enterprise-ai-platform) | Bloom → RKE2 → ClusterForge → AIRM on bare metal: 7 production issues documented with root causes and fixes |
-| [**amd-ai-workbench-ops**](https://github.com/namanadep/amd-ai-workbench-ops) | GPU scheduling, model deployment, workspaces (ComfyUI/JupyterLab/VS Code), fine-tuning — kubectl ops playbook |
-| [**mig-performance-lab**](https://github.com/namanadep/mig-performance-lab) | MIG profile tradeoffs: isolation vs throughput on A100/H100-class GPUs |
+`ROCm` `HIP` `rocprof` `RCCL` `NCCL` `PyTorch` `vLLM`
+`Kubernetes` `AMD GPU Operator` `RKE2` `Argo CD`
+`Prometheus` `Grafana` `GPU observability`
+`NVIDIA CUDA` `H200` `NVLink` `MIG`
 
 ---
 
 ### Writing
 
-Medium: [@adepnaman](https://medium.com/@adepnaman) — benchmarks on H200 and MI300X, NCCL, mixed precision, kernel fusion, GPU memory, VAST vs NetApp storage, India AI infrastructure.
-
-Topics: *CUDA kernel fusion 7.94×* · *MI300X vs H200 actual numbers* · *RoCE v2 IBV_WC_RETRY_EXC_ERR root cause* · *14.38× Tensor Core speedup* · *144 storage benchmarks VAST vs NetApp*
-
----
-
-### Contact
-
-LinkedIn: [naman-adep](https://www.linkedin.com/in/naman-adep/) · Mentoring: [topmate.io/namanadep](https://topmate.io/namanadep)
+Technical articles on GPU infrastructure, performance engineering, and AI systems —
+published on Medium. Topics: MI300X vs H200, ROCm setup, NVLink, AllReduce, GPU OOM.
 
 ---
 
-<p align="center">
-  <img src="https://img.shields.io/badge/NVIDIA-H200-76B900?style=flat&logo=nvidia&logoColor=white" alt="NVIDIA H200" />
-  <img src="https://img.shields.io/badge/AMD-MI300X-ED1C24?style=flat&logo=amd&logoColor=white" alt="AMD MI300X" />
-  <img src="https://img.shields.io/badge/ROCm-6.4.1-ED1C24?style=flat&logo=amd&logoColor=white" alt="ROCm 6.4.1" />
-  <img src="https://img.shields.io/badge/CUDA-12.8-76B900?style=flat&logo=nvidia&logoColor=white" alt="CUDA 12.8" />
-  <img src="https://img.shields.io/badge/Stack-NCCL%20%7C%20RCCL%20%7C%20SLURM%20%7C%20DCGM-111?style=flat" alt="Stack" />
-  <img src="https://img.shields.io/badge/Kubernetes-RKE2%20%7C%20Argo%20CD%20%7C%20AMD%20GPU%20Operator-326CE5?style=flat&logo=kubernetes&logoColor=white" alt="Kubernetes" />
-</p>
+> All numbers are from real hardware runs. VF and single-GPU constraints are called out
+> in each repo. No vendor affiliation.
